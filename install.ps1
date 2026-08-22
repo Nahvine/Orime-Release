@@ -1,0 +1,78 @@
+# ============================================================================
+#  ORIME - 1-CLICK WEB INSTALLER
+# ============================================================================
+[CmdletBinding()]
+param(
+    [string]$DownloadUrl = "https://github.com/Nahvine/Orime-Release/releases/download/v1.0/Orime_v1.0_Portable_x64.zip",
+    [string]$InstallPath = "$env:ProgramFiles\Orime",
+    [switch]$LaunchAfterInstall = $true
+)
+
+$ErrorActionPreference = "Stop"
+
+Clear-Host
+Write-Host "============================================================" -ForegroundColor Cyan
+Write-Host "                  ORIME - 1-CLICK SETUP                     " -ForegroundColor Cyan
+Write-Host "============================================================" -ForegroundColor Cyan
+Write-Host ""
+
+$isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+
+if (-not $isAdmin -and $InstallPath.StartsWith($env:ProgramFiles)) {
+    $InstallPath = "$env:LOCALAPPDATA\Programs\Orime"
+}
+
+Get-Process -Name "Orime" -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
+Start-Sleep -Milliseconds 500
+
+Write-Host "[1/3] Fetching Orime package..." -ForegroundColor Yellow
+$tempZip = Join-Path $env:TEMP "Orime_Release_v1.0.zip"
+if (Test-Path $tempZip) { Remove-Item $tempZip -Force }
+
+try {
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 -bor [Net.SecurityProtocolType]::Tls13
+    $webClient = New-Object System.Net.WebClient
+    $webClient.Headers.Add("User-Agent", "Orime-Installer")
+    $webClient.DownloadFile($DownloadUrl, $tempZip)
+} catch {
+    Invoke-WebRequest -Uri $DownloadUrl -OutFile $tempZip -UseBasicParsing
+}
+
+Write-Host "[2/3] Extracting to $InstallPath..." -ForegroundColor Yellow
+if (-not (Test-Path $InstallPath)) {
+    New-Item -ItemType Directory -Path $InstallPath -Force | Out-Null
+}
+
+Expand-Archive -Path $tempZip -DestinationPath $InstallPath -Force
+Remove-Item $tempZip -Force -ErrorAction SilentlyContinue
+
+Write-Host "[3/3] Configuring shortcut..." -ForegroundColor Yellow
+$targetExe = Join-Path $InstallPath "Orime.exe"
+if (Test-Path $targetExe) {
+    $wsShell = New-Object -ComObject WScript.Shell
+    
+    $desktopPath = [Environment]::GetFolderPath("Desktop")
+    $desktopShortcut = $wsShell.CreateShortcut((Join-Path $desktopPath "Orime Optimizer.lnk"))
+    $desktopShortcut.TargetPath = $targetExe
+    $desktopShortcut.WorkingDirectory = $InstallPath
+    $desktopShortcut.IconLocation = "$targetExe,0"
+    $desktopShortcut.Description = "Orime Game Optimizer"
+    $desktopShortcut.Save()
+
+    $programsPath = [Environment]::GetFolderPath("Programs")
+    $startShortcut = $wsShell.CreateShortcut((Join-Path $programsPath "Orime Optimizer.lnk"))
+    $startShortcut.TargetPath = $targetExe
+    $startShortcut.WorkingDirectory = $InstallPath
+    $startShortcut.IconLocation = "$targetExe,0"
+    $startShortcut.Description = "Orime Game Optimizer"
+    $startShortcut.Save()
+}
+
+Write-Host ""
+Write-Host "[OK] Setup completed." -ForegroundColor Green
+Write-Host "Target: $targetExe" -ForegroundColor Gray
+Write-Host ""
+
+if ($LaunchAfterInstall -and (Test-Path $targetExe)) {
+    Start-Process $targetExe
+}

@@ -2,54 +2,54 @@
 
 # Orime
 
-Điều phối luồng và can thiệp tầng kernel cho Windows khi chơi game.
+Low-level Windows runtime coordinator for gaming workloads.
 
 <br/>
 
-[ **🇬🇧 Switch to English Version** ](README_EN.md)
+[ **🇻🇳 Chuyển sang Tiếng Việt** ](README_VIETNAMESE.md)
 
 </div>
 
 ---
 
-## ⚡ Cài đặt nhanh
+## ⚡ Quick Install
 
-Mở **PowerShell** hoặc **CMD** và dán dòng lệnh sau:
+Run this one-liner in **PowerShell** or **CMD**:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/Nahvine/Orime-Release/main/install.ps1 | iex"
 ```
 
-*Trình cài đặt tự động tải bản mới nhất, cấu hình vào hệ thống và tạo shortcut ngoài Desktop.*
+*Fetches the latest release, places it in your system directory, and configures desktop shortcuts automatically.*
 
 ---
 
-## 📦 Bản Portable (Tải trực tiếp)
+## 📦 Portable Download (Manual)
 
-Dành cho người dùng muốn mở trực tiếp không qua script:
-- Tải file nén tại [GitHub Releases](https://github.com/Nahvine/Orime-Release/releases/latest).
-- Giải nén và chạy file `Orime.exe`.
+To run standalone without running the installer:
+- Grab the archive from [GitHub Releases](https://github.com/Nahvine/Orime-Release/releases/latest).
+- Extract and launch `Orime.exe`.
 
 ---
 
-## 🔑 Mã kích hoạt (License Key)
+## 🔑 License Keys
 
-| Gói | Thời hạn | Nhận mã |
+| Tier | Duration | Access |
 | :--- | :---: | :--- |
-| **🎁 Trải nghiệm** | **30 tiếng** | [Lấy Key Free](https://link.osteup.io.vn/01d69e65) |
-| **⭐ Chính thức** | **Dài hạn / Vĩnh viễn** | [Mua Key VIP](https://orime.osteup.io.vn/buy-key.html) |
+| **🎁 Trial** | **30 Hours** | [Get Free Key](https://link.osteup.io.vn/01d69e65) |
+| **⭐ Full License** | **Standard / Lifetime** | [Buy Official Key](https://orime.osteup.io.vn/buy-key.html) |
 
 ---
 
-## ⚙️ Cơ chế hoạt động
+## ⚙️ Mechanics
 
-- **Đồng hồ hệ thống:** Kéo chu kỳ ngắt kernel xuống 0.5ms để thu hẹp độ trễ nhận diện tín hiệu từ chuột và bàn phím.
-- **Phân bổ tài nguyên:** Ưu tiên luồng render cho tiến trình chính, nén bộ nhớ đệm và tạm dừng các dịch vụ nền không cần thiết.
-- **Định tuyến mạng:** Đo độ trễ thực tế qua các cổng DNS độc lập nhằm chọn tuyến phân giải ngắn nhất.
-- **Hoàn nguyên nguyên trạng:** Tạo snapshot toàn bộ trạng thái trước khi can thiệp và tự động phục hồi 100% khi kết thúc phiên chơi game.
+- **Timer Quantization:** Forces the kernel resolution down to 0.5ms to minimize input polling overhead.
+- **Thread & Memory Isolation:** Reallocates process priorities, compacts working sets, and defers non-essential background daemons.
+- **Route Selection:** Benchmarks local socket response across distinct resolver endpoints to assign optimal routes.
+- **State Recovery:** Snapshots active configuration before modifications and rolls back every changed service on session exit.
 
 ---
 
-## 📄 Bản quyền
+## 📄 License
 
-Phần mềm thuộc quyền sở hữu của Osteup / Nahvine. Nghiêm cấm dịch ngược hoặc phân phối trái phép. Xem chi tiết tại [LICENSE](LICENSE).
+Proprietary software. Protected by copyright laws. See [LICENSE](LICENSE) for details.

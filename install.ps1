@@ -52,13 +52,16 @@ foreach ($url in $mirrors) {
         Write-Host "  -> Connecting to source: $url" -ForegroundColor DarkGray
         
         $request = [System.Net.HttpWebRequest]::Create($url)
-        $request.UserAgent = "Orime-Setup"
-        $request.Timeout = 20000
+        $request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Orime-Setup"
+        $request.Timeout = 600000
+        $request.ReadWriteTimeout = 600000
+        $request.AllowAutoRedirect = $true
         $request.Method = "GET"
         
         $response = $request.GetResponse()
         $totalBytes = $response.ContentLength
-        $totalMb = [Math]::Round($totalBytes / 1MB, 2)
+        if ($totalBytes -le 0) { $totalBytes = 88435180 }
+        $totalMb = [Math]::Round($totalBytes / 1MB, 1)
         
         $responseStream = $response.GetResponseStream()
         $fileStream = [System.IO.File]::Create($tempZip)
@@ -72,22 +75,18 @@ foreach ($url in $mirrors) {
             $downloadedBytes += $read
             
             $now = [System.DateTime]::Now
-            if (($now - $lastUpdate).TotalMilliseconds -ge 120 -or $downloadedBytes -ge $totalBytes) {
+            if (($now - $lastUpdate).TotalMilliseconds -ge 100 -or $downloadedBytes -ge $totalBytes) {
                 $lastUpdate = $now
                 $elapsedSec = [Math]::Max(0.01, $stopwatch.Elapsed.TotalSeconds)
-                $speedMbSec = [Math]::Round(($downloadedBytes / 1MB) / $elapsedSec, 2)
-                $currMb = [Math]::Round($downloadedBytes / 1MB, 2)
+                $speedMbSec = [Math]::Round(($downloadedBytes / 1MB) / $elapsedSec, 1)
+                $currMb = [Math]::Round($downloadedBytes / 1MB, 1)
                 
-                if ($totalBytes -gt 0) {
-                    $percent = [Math]::Min(100, [int](($downloadedBytes / $totalBytes) * 100))
-                    $barWidth = 24
-                    $completed = [int](($percent / 100) * $barWidth)
-                    $remaining = $barWidth - $completed
-                    $bar = ("=" * [Math]::Max(0, $completed - 1)) + (if ($completed -gt 0) { ">" } else { "" }) + (" " * $remaining)
-                    Write-Host -NoNewline "`r  [$bar] $percent% ($currMb MB / $totalMb MB) @ $speedMbSec MB/s    "
-                } else {
-                    Write-Host -NoNewline "`r  [Downloading...] $currMb MB @ $speedMbSec MB/s    "
-                }
+                $percent = [Math]::Min(100, [int](($downloadedBytes / $totalBytes) * 100))
+                $barWidth = 24
+                $completed = [int](($percent / 100) * $barWidth)
+                $remaining = [Math]::Max(0, $barWidth - $completed)
+                $bar = ("=" * [Math]::Max(0, $completed - 1)) + (if ($completed -gt 0) { ">" } else { "" }) + (" " * $remaining)
+                Write-Host -NoNewline "`r  [$bar] $percent% ($currMb MB / $totalMb MB) @ $speedMbSec MB/s    "
             }
         }
         

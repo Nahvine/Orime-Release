@@ -30,6 +30,16 @@ Khác với các script tinh chỉnh ghi đè registry vĩnh viễn, Orime lưu 
 
 ---
 
+## Hướng dẫn sử dụng cơ bản
+
+1. **Khởi động Orime**: Mở tệp `Orime.exe` (khuyên dùng quyền Administrator để app chỉnh được timer 0.5 ms và dịch vụ hệ thống).
+2. **Chọn chế độ**: Chọn một trong ba cấu hình **Safe**, **Normal**, hoặc **Extreme** ở màn hình chính, hoặc tự điều chỉnh từng mục trong tab **Tinh chỉnh (Tweaks)**.
+3. **Bật Chế độ Chơi Game**: Nhấn nút **Kích Hoạt** trước khi vào game. Ứng dụng sẽ áp dụng các tinh chỉnh và hiển thị thông số thời gian thực (RAM giải phóng, timer, độ trễ mạng).
+4. **Vào game**: Chơi game bình thường với tài nguyên máy được tối ưu cho game.
+5. **Hoàn tác cài đặt**: Khi chơi xong, nhấn nút **Tắt** hoặc đóng Orime. Bảng báo cáo khôi phục sẽ xác nhận hệ thống đã trở về 100% trạng thái ban đầu.
+
+---
+
 ## Cơ chế hoạt động của Chế độ Chơi Game
 
 Khi bạn bật tính năng, Orime sẽ tối ưu hệ thống qua 7 giai đoạn:
@@ -54,6 +64,25 @@ Khi bạn bật tính năng, Orime sẽ tối ưu hệ thống qua 7 giai đoạ
 
 ---
 
+## Câu hỏi thường gặp (FAQ)
+
+### Dùng Orime có bị khóa tài khoản game (Ban acc) không?
+**Hoàn toàn không.** Orime chỉ tinh chỉnh ở tầng hệ điều hành Windows (gói nguồn, dịch vụ hệ thống, bộ nhớ đệm RAM, độ phân giải timer và thiết lập mạng). Phần mềm không can thiệp vào tệp tin của game, không hook tiến trình và không đọc ghi bộ nhớ game. Ứng dụng an toàn tuyệt đối với mọi hệ thống chống gian lận như Riot Vanguard, Easy Anti-Cheat, BattlEye, VAC hay Ricochet.
+
+### Orime có làm hỏng Windows Update hay lỗi win không?
+**Không.** Trước khi đổi bất kỳ thiết lập nào, Orime đều sao lưu trạng thái gốc vào tệp nhật ký (Journal). Khi bạn tắt Gaming Mode hoặc thoát ứng dụng, toàn bộ thiết lập sẽ được hoàn trả về đúng như ban đầu. Windows Update và các thành phần cốt lõi của hệ thống không bị ảnh hưởng.
+
+### Nếu máy tính bị sập nguồn hoặc tắt đột ngột khi đang bật Gaming Mode thì sao?
+Ở lần khởi động tiếp theo, Orime sẽ tự động đọc lại tệp nhật ký chưa hoàn tất và khôi phục các thiết lập hệ thống về nguyên trạng.
+
+### Ứng dụng có cần kết nối mạng để hoạt động không?
+**Không.** Các tính năng tối ưu chính đều hoạt động ngoại tuyến (offline). Tác vụ kiểm tra ping DNS ở Phase 3 sẽ tự bỏ qua nếu không có mạng.
+
+### Phase 0 tạm dừng tiến trình phụ có làm mất tab trình duyệt web không?
+**Không.** Phase 0 chỉ tạm dừng các tiến trình helper chạy ngầm (như trình kiểm tra cập nhật). Cửa sổ trình duyệt, các tab đang mở và các ứng dụng bạn đang dùng vẫn được giữ nguyên.
+
+---
+
 ## Lệnh PowerShell
 
 ### Cài đặt mới hoặc Cập nhật
@@ -64,7 +93,7 @@ Mở **PowerShell** và chạy lệnh:
 irm https://raw.githubusercontent.com/Nahvine/Orime-Release/main/install.ps1 | iex
 ```
 
-Nếu máy đã có phiên bản cũ, lệnh này sẽ tự động đóng ứng dụng đang chạy, cập nhật các tệp mới và làm mới biểu tượng ngoài màn hình chính. Cài đặt cá nhân và mã kích hoạt của bạn được lưu riêng tại `%LOCALAPPDATA%\Orime` nên sẽ không bị mất.
+Nếu máy đã có phiên bản cũ, lệnh này sẽ tự động đóng ứng dụng đang chạy, cập nhật các tệp mới và làm mới biểu tượng ngoài màn hình chính. Cài đặt cá nhân của bạn được lưu riêng tại `%LOCALAPPDATA%\Orime` nên sẽ không bị mất.
 
 ### Gỡ cài đặt hoàn toàn
 

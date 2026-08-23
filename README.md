@@ -30,6 +30,16 @@ Unlike static tweak scripts that make permanent registry edits, Orime saves a sn
 
 ---
 
+## How to Use
+
+1. **Launch Orime**: Open `Orime.exe` (run as Administrator for service and kernel timer adjustments).
+2. **Choose a preset**: Select **Safe**, **Normal**, or **Extreme** mode on the main dashboard, or customize specific tweaks in the **Tweaks** tab.
+3. **Activate Gaming Mode**: Click **Kích Hoạt** (Activate) before starting your game. The app will apply the selected tweaks and display live metrics (freed RAM, timer resolution, and network latency).
+4. **Play your game**: Run your game normally.
+5. **Restore settings**: When finished, click **Tắt** (Deactivate) or close Orime. A restore report will confirm that your system settings have returned to their original state.
+
+---
+
 ## How Gaming Mode Works
 
 When activated, Orime applies optimizations across seven sequential phases:
@@ -54,6 +64,25 @@ When activated, Orime applies optimizations across seven sequential phases:
 
 ---
 
+## Frequently Asked Questions
+
+### Can this trigger an anticheat ban in online games?
+**No.** Orime works strictly at the Windows operating system level (power plans, system services, memory cache, and network parameters). It does not inject code, hook game processes, modify game files, or touch game memory. It is fully compatible with Riot Vanguard, Easy Anti-Cheat, BattlEye, Valve Anti-Cheat (VAC), and Ricochet.
+
+### Does Orime make permanent changes or break Windows Update?
+**No.** Every modification is recorded in a local state journal before application. When you turn off Gaming Mode or exit the app, Orime rolls back each setting to its exact pre-activation state. Windows Update and core system components remain intact.
+
+### What happens if my PC crashes or loses power while Gaming Mode is on?
+On the next launch, Orime detects the unfinished session from the saved journal and automatically restores your original system settings.
+
+### Do I need an internet connection to use Orime?
+**No.** All core optimization phases work locally and offline. Network tests (DNS ping measurements in Phase 3) will simply skip if no connection is present.
+
+### Does Phase 0 close my open browser tabs?
+**No.** Phase 0 only suspends background updater and helper services (such as browser update checkers). Your browser windows, tabs, and active applications remain open.
+
+---
+
 ## Commands
 
 ### Install or Update
@@ -64,7 +93,7 @@ Open **PowerShell** and run:
 irm https://raw.githubusercontent.com/Nahvine/Orime-Release/main/install.ps1 | iex
 ```
 
-Running this command on a system that already has Orime will close the running app, replace the application files with the latest build, and update desktop and Start menu shortcuts. Your saved configuration and license key are stored separately in `%LOCALAPPDATA%\Orime` and will stay intact.
+Running this command on a system that already has Orime will close the running app, replace the application files with the latest build, and update desktop and Start menu shortcuts. Your saved configuration is stored separately in `%LOCALAPPDATA%\Orime` and will stay intact.
 
 ### Uninstall
 

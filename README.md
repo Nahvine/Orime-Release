@@ -24,8 +24,6 @@ Orime optimizes Windows 10 and 11 for lower input latency and smoother frame del
 
 Unlike static tweak scripts that make permanent registry edits, Orime saves a snapshot of your original system settings (services, power plans, and registry keys) into a local journal before making changes. When you turn off Gaming Mode or close the app, it restores those settings to their previous state.
 
-The application is written in C# on .NET 10 with a native WinUI 3 interface.
-
 <div align="center">
 <img src="assets/tweaks_preview.png" alt="Orime Tweaks Configuration" width="850" />
 </div>
@@ -34,17 +32,17 @@ The application is written in C# on .NET 10 with a native WinUI 3 interface.
 
 ## How Gaming Mode Works
 
-When activated, Orime applies tweaks across seven sequential phases:
+When activated, Orime applies optimizations across seven sequential phases:
 
-| Phase | Target | Action |
+| Phase | Target | Purpose |
 | :--- | :--- | :--- |
-| **Phase 0** | **Background helpers** | Suspends non-critical helper processes (such as browser update checkers and peripheral software agents) to reduce background CPU usage without closing your open tabs. |
-| **Phase 1** | **Telemetry and background services** | Pauses diagnostic tracing, telemetry collection, and the print spooler while gaming. |
-| **Phase 2** | **RAM and background maintenance** | Purges standby memory cache and pauses scheduled Windows maintenance tasks. |
-| **Phase 3** | **Network latency** | Pings Cloudflare (`1.1.1.1`), Google (`8.8.8.8`), and Quad9 to find the lowest-latency DNS resolver. Enables `TCP NoDelay`. |
-| **Phase 4** | **Explorer shell (optional)** | Can suspend `explorer.exe` during full-screen gameplay to free 200 to 400 MB of RAM and reduce DWM compositor overhead. Restores Explorer automatically when you exit. |
-| **Phase 5** | **Antivirus scan priority** | Lowers Windows Defender scan priority during active sessions to prevent sudden disk spikes. |
-| **Phase 6** | **CPU and timer resolution** | Unparks CPU cores, activates the Ultimate Performance power scheme, and sets the system timer resolution to 0.5 ms. |
+| **Phase 0** | **Background helpers** | Pauses background helper processes to prioritize CPU resources for gaming. |
+| **Phase 1** | **Background services** | Temporarily pauses non-essential system services during gaming sessions. |
+| **Phase 2** | **RAM and maintenance** | Purges standby memory cache and defers background maintenance tasks. |
+| **Phase 3** | **Network latency** | Optimizes network routing and packet response times. |
+| **Phase 4** | **Explorer shell (optional)** | Temporarily suspends the desktop shell to free memory and lower render overhead. |
+| **Phase 5** | **Security scan priority** | Lowers background scan priority to prevent frame stutter. |
+| **Phase 6** | **CPU and timer resolution** | Optimizes CPU power allocation and sets system timer resolution to 0.5 ms. |
 
 ---
 
@@ -95,6 +93,6 @@ If you prefer not to use the installer:
 
 ## System Requirements
 
-* Windows 10 (version 1903 or newer) or Windows 11 (64-bit).
+* Windows 10 or Windows 11 (64-bit).
 * Administrator rights (required for adjusting the 0.5 ms kernel timer and Windows service states).
 * The portable download includes the required .NET 10 runtime files.

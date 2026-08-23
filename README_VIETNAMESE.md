@@ -24,8 +24,6 @@ Orime giúp giảm độ trễ nhập liệu và ổn định khung hình khi ch
 
 Khác với các script tinh chỉnh ghi đè registry vĩnh viễn, Orime lưu lại toàn bộ trạng thái ban đầu của dịch vụ hệ thống, gói nguồn và registry vào một tệp nhật ký (Journal) trước khi áp dụng thay đổi. Khi bạn tắt Chế độ Chơi Game hoặc đóng ứng dụng, Orime sẽ tự động trả các thiết lập này về đúng trạng thái cũ.
 
-Ứng dụng được viết bằng C# trên nền tảng .NET 10 và giao diện WinUI 3 gốc.
-
 <div align="center">
 <img src="assets/tweaks_preview.png" alt="Giao diện cấu hình tinh chỉnh Orime" width="850" />
 </div>
@@ -34,17 +32,17 @@ Khác với các script tinh chỉnh ghi đè registry vĩnh viễn, Orime lưu 
 
 ## Cơ chế hoạt động của Chế độ Chơi Game
 
-Khi bạn bật tính năng, Orime sẽ xử lý hệ thống qua 7 giai đoạn:
+Khi bạn bật tính năng, Orime sẽ tối ưu hệ thống qua 7 giai đoạn:
 
-| Giai đoạn | Đối tượng | Thao tác thực hiện |
+| Giai đoạn | Đối tượng | Mục tiêu |
 | :--- | :--- | :--- |
-| **Phase 0** | **Tiến trình phụ chạy ngầm** | Tạm dừng các tiến trình helper (như trình kiểm tra cập nhật của Chrome/Edge, app quản lý chuột/phím) để giảm tải CPU mà không làm mất tab trình duyệt đang mở. |
-| **Phase 1** | **Dịch vụ chẩn đoán và theo dõi** | Tạm dừng các dịch vụ chẩn đoán lỗi, thu thập dữ liệu (telemetry) và dịch vụ in ấn trong lúc chơi game. |
-| **Phase 2** | **Bộ nhớ RAM và bảo trì** | Xả bộ nhớ đệm (Standby list) và tạm hoãn các tác vụ tự động bảo trì của Windows. |
-| **Phase 3** | **Độ trễ mạng** | Đo thời gian phản hồi tới Cloudflare (`1.1.1.1`), Google (`8.8.8.8`) và Quad9 để chọn DNS phản hồi nhanh nhất. Bật `TCP NoDelay`. |
-| **Phase 4** | **Giao diện Windows Explorer (tùy chọn)** | Cho phép tạm dừng `explorer.exe` khi chơi game toàn màn hình để tiết kiệm 200 đến 400 MB RAM và giảm độ trễ dựng hình của DWM. Explorer sẽ tự mở lại khi thoát game. |
-| **Phase 5** | **Ưu tiên quét virus** | Giảm mức ưu tiên quét ngầm của Windows Defender để hạn chế tình trạng giật lag do đọc ghi ổ đĩa bất ngờ. |
-| **Phase 6** | **CPU và đồng hồ hệ thống** | Đánh thức các nhân CPU đang nghỉ (Core Unparking), chuyển sang gói nguồn Ultimate Performance và đặt độ phân giải đồng hồ hệ thống về mức 0.5 ms. |
+| **Phase 0** | **Tiến trình phụ chạy ngầm** | Tạm dừng các tiến trình phụ để nhường tài nguyên CPU cho game. |
+| **Phase 1** | **Dịch vụ hệ thống** | Tạm hoãn các dịch vụ chạy nền không cần thiết trong phiên chơi game. |
+| **Phase 2** | **Bộ nhớ RAM và bảo trì** | Giải phóng bộ nhớ đệm RAM và tạm hoãn các tác vụ bảo trì hệ thống. |
+| **Phase 3** | **Độ trễ mạng** | Tối ưu định tuyến mạng và giảm độ trễ phản hồi kết nối. |
+| **Phase 4** | **Giao diện Explorer (tùy chọn)** | Tùy chọn tạm dừng giao diện Windows để giải phóng thêm bộ nhớ và giảm tải dựng hình. |
+| **Phase 5** | **Ưu tiên quét bảo mật** | Hạ mức ưu tiên của các tác vụ quét ngầm để tránh giật khung hình. |
+| **Phase 6** | **CPU và đồng hồ hệ thống** | Tối ưu phân bổ nguồn điện CPU và đặt độ phân giải đồng hồ hệ thống về mức 0.5 ms. |
 
 ---
 
@@ -95,6 +93,6 @@ Nếu bạn không muốn cài đặt:
 
 ## Yêu cầu hệ thống
 
-* Windows 10 (bản 1903 trở lên) hoặc Windows 11 (64-bit).
+* Windows 10 hoặc Windows 11 (64-bit).
 * Quyền Quản trị viên (Administrator) để ứng dụng có thể chỉnh timer 0.5 ms và chuyển trạng thái dịch vụ hệ thống.
 * Bản nén Portable đã đi kèm sẵn các tệp thư viện .NET 10 cần thiết.

@@ -45,66 +45,24 @@ $downloadSuccess = $false
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 -bor [Net.SecurityProtocolType]::Tls13
 
 foreach ($url in $mirrors) {
-    $fileStream = $null
-    $responseStream = $null
-    $response = $null
     try {
-        Write-Host "  -> Connecting to source: $url" -ForegroundColor DarkGray
-        
-        $request = [System.Net.HttpWebRequest]::Create($url)
-        $request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Orime-Setup"
-        $request.Timeout = 600000
-        $request.ReadWriteTimeout = 600000
-        $request.AllowAutoRedirect = $true
-        $request.Method = "GET"
-        
-        $response = $request.GetResponse()
-        $totalBytes = $response.ContentLength
-        if ($totalBytes -le 0) { $totalBytes = 88435180 }
-        $totalMb = [Math]::Round($totalBytes / 1MB, 1)
-        
-        $responseStream = $response.GetResponseStream()
-        $fileStream = [System.IO.File]::Create($tempZip)
-        $buffer = New-Object byte[] 65536
-        $downloadedBytes = 0
+        Write-Host "  -> Downloading from: $url" -ForegroundColor DarkGray
+        $wc = New-Object System.Net.WebClient
+        $wc.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Orime-Setup")
         $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
-        $lastUpdate = [System.DateTime]::MinValue
         
-        while (($read = $responseStream.Read($buffer, 0, $buffer.Length)) -gt 0) {
-            $fileStream.Write($buffer, 0, $read)
-            $downloadedBytes += $read
-            
-            $now = [System.DateTime]::Now
-            if (($now - $lastUpdate).TotalMilliseconds -ge 100 -or $downloadedBytes -ge $totalBytes) {
-                $lastUpdate = $now
-                $elapsedSec = [Math]::Max(0.01, $stopwatch.Elapsed.TotalSeconds)
-                $speedMbSec = [Math]::Round(($downloadedBytes / 1MB) / $elapsedSec, 1)
-                $currMb = [Math]::Round($downloadedBytes / 1MB, 1)
-                
-                $percent = [Math]::Min(100, [int](($downloadedBytes / $totalBytes) * 100))
-                $barWidth = 24
-                $completed = [int](($percent / 100) * $barWidth)
-                $remaining = [Math]::Max(0, $barWidth - $completed)
-                $bar = ("=" * [Math]::Max(0, $completed - 1)) + (if ($completed -gt 0) { ">" } else { "" }) + (" " * $remaining)
-                Write-Host -NoNewline "`r  [$bar] $percent% ($currMb MB / $totalMb MB) @ $speedMbSec MB/s    "
-            }
-        }
+        $wc.DownloadFile($url, $tempZip)
         
-        $fileStream.Flush()
-        $fileStream.Close()
-        $responseStream.Close()
-        $response.Close()
-        Write-Host ""
-        
-        if ((Test-Path $tempZip) -and ((Get-Item $tempZip).Length -gt 1000000)) {
+        if ((Test-Path $tempZip) -and ((Get-Item $tempZip).Length -gt 50000000)) {
             $downloadSuccess = $true
-            Write-Host "  [OK] Download completed successfully! ($([Math]::Round((Get-Item $tempZip).Length / 1MB, 2)) MB in $([Math]::Round($stopwatch.Elapsed.TotalSeconds, 1))s)" -ForegroundColor Green
+            $sizeMb = [Math]::Round((Get-Item $tempZip).Length / 1MB, 2)
+            $sec = [Math]::Max(0.1, [Math]::Round($stopwatch.Elapsed.TotalSeconds, 1))
+            $speed = [Math]::Round($sizeMb / $sec, 1)
+            Write-Host "  [OK] Downloaded $sizeMb MB in ${sec}s (${speed} MB/s)!" -ForegroundColor Green
             break
         }
     } catch {
-        if ($fileStream) { $fileStream.Close() }
-        if ($responseStream) { $responseStream.Close() }
-        if ($response) { $response.Close() }
+        # Fallback to next mirror
     }
 }
 

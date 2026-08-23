@@ -3,7 +3,7 @@
 # ============================================================================
 [CmdletBinding()]
 param(
-    [string]$DownloadUrl = "https://github.com/Nahvine/Orime-Release/releases/download/v1.0/Orime_v1.0_Portable_x64.zip",
+    [string]$DownloadUrl = "",
     [string]$InstallPath = "$env:ProgramFiles\Orime",
     [switch]$LaunchAfterInstall = $true
 )
@@ -29,13 +29,46 @@ Write-Host "[1/3] Fetching Orime package..." -ForegroundColor Yellow
 $tempZip = Join-Path $env:TEMP "Orime_Release_v1.0.zip"
 if (Test-Path $tempZip) { Remove-Item $tempZip -Force }
 
-try {
-    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 -bor [Net.SecurityProtocolType]::Tls13
-    $webClient = New-Object System.Net.WebClient
-    $webClient.Headers.Add("User-Agent", "Orime-Installer")
-    $webClient.DownloadFile($DownloadUrl, $tempZip)
-} catch {
-    Invoke-WebRequest -Uri $DownloadUrl -OutFile $tempZip -UseBasicParsing
+$mirrors = @(
+    "https://orime.osteup.io.vn/download/Orime_v1.0_Portable_x64.zip",
+    "https://github.com/Nahvine/Orime-Release/releases/download/v1.0/Orime_v1.0_Portable_x64.zip",
+    "https://github.com/Nahvine/Orime-Release/releases/latest/download/Orime_v1.0_Portable_x64.zip"
+)
+
+if (-not [string]::IsNullOrWhiteSpace($DownloadUrl)) {
+    $mirrors = @($DownloadUrl) + $mirrors
+}
+
+$downloadSuccess = $false
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 -bor [Net.SecurityProtocolType]::Tls13
+
+foreach ($url in $mirrors) {
+    try {
+        Write-Host "  -> Connecting to source: $url" -ForegroundColor DarkGray
+        $webClient = New-Object System.Net.WebClient
+        $webClient.Headers.Add("User-Agent", "Orime-Installer")
+        $webClient.DownloadFile($url, $tempZip)
+        if ((Test-Path $tempZip) -and ((Get-Item $tempZip).Length -gt 1000000)) {
+            $downloadSuccess = $true
+            Write-Host "  [OK] Downloaded successfully!" -ForegroundColor Green
+            break
+        }
+    } catch {
+        try {
+            Invoke-WebRequest -Uri $url -OutFile $tempZip -UseBasicParsing -TimeoutSec 20
+            if ((Test-Path $tempZip) -and ((Get-Item $tempZip).Length -gt 1000000)) {
+                $downloadSuccess = $true
+                Write-Host "  [OK] Downloaded successfully!" -ForegroundColor Green
+                break
+            }
+        } catch { }
+    }
+}
+
+if (-not $downloadSuccess) {
+    Write-Host "[ERROR] Could not download Orime package from available mirrors." -ForegroundColor Red
+    Write-Host "Please download manually from https://orime.osteup.io.vn or https://github.com/Nahvine/Orime-Release" -ForegroundColor Yellow
+    exit 1
 }
 
 Write-Host "[2/3] Extracting to $InstallPath..." -ForegroundColor Yellow
@@ -69,7 +102,7 @@ if (Test-Path $targetExe) {
 }
 
 Write-Host ""
-Write-Host "[OK] Setup completed." -ForegroundColor Green
+Write-Host "[OK] Setup completed successfully!" -ForegroundColor Green
 Write-Host "Target: $targetExe" -ForegroundColor Gray
 Write-Host ""
 

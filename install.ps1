@@ -121,14 +121,22 @@ if (-not (Test-Path $InstallPath)) {
 }
 
 $tempExtract = Join-Path $env:TEMP "Orime_Extract"
-if (Test-Path $tempExtract) { Remove-Item $tempExtract -Recurse -Force }
+if (Test-Path $tempExtract) { Remove-Item $tempExtract -Recurse -Force -ErrorAction SilentlyContinue }
+
 Expand-Archive -Path $tempZip -DestinationPath $tempExtract -Force
 
-$extractedDir = Get-ChildItem -Path $tempExtract -Directory | Select-Object -First 1
-if ($extractedDir) {
-    Copy-Item -Path "$($extractedDir.FullName)\*" -Destination $InstallPath -Recurse -Force
-} else {
+# Extract handling: copy all files cleanly ensuring Orime.exe is at the root of $InstallPath
+$rootExe = Join-Path $tempExtract "Orime.exe"
+if (Test-Path $rootExe) {
     Copy-Item -Path "$tempExtract\*" -Destination $InstallPath -Recurse -Force
+} else {
+    $subDirWithExe = Get-ChildItem -Path $tempExtract -Recurse -Filter "Orime.exe" | Select-Object -First 1
+    if ($subDirWithExe) {
+        $parent = $subDirWithExe.DirectoryName
+        Copy-Item -Path "$parent\*" -Destination $InstallPath -Recurse -Force
+    } else {
+        Copy-Item -Path "$tempExtract\*" -Destination $InstallPath -Recurse -Force
+    }
 }
 
 Remove-Item $tempZip -Force -ErrorAction SilentlyContinue
@@ -137,21 +145,52 @@ Remove-Item $tempExtract -Recurse -Force -ErrorAction SilentlyContinue
 Write-Host "[3/3] Creating shortcuts..." -ForegroundColor Yellow
 $exePath = Join-Path $InstallPath "Orime.exe"
 if (Test-Path $exePath) {
-    $WshShell = New-Object -ComObject WScript.Shell
-    
-    $desktopPath = [Environment]::GetFolderPath("Desktop")
-    $shortcutDesktop = $WshShell.CreateShortcut((Join-Path $desktopPath "Orime.lnk"))
-    $shortcutDesktop.TargetPath = $exePath
-    $shortcutDesktop.WorkingDirectory = $InstallPath
-    $shortcutDesktop.Description = "Orime Gaming Mode Optimizer"
-    $shortcutDesktop.Save()
+    try {
+        $WshShell = New-Object -ComObject WScript.Shell
+        
+        $desktopTargets = @(
+            [Environment]::GetFolderPath("Desktop"),
+            [Environment]::GetFolderPath("CommonDesktopDirectory"),
+            "$env:USERPROFILE\Desktop",
+            "$env:USERPROFILE\OneDrive\Desktop"
+        ) | Where-Object { [string]::IsNullOrWhiteSpace($_) -eq $false -and (Test-Path $_) } | Select-Object -Unique
+        
+        foreach ($dPath in $desktopTargets) {
+            try {
+                $shortcutDesktop = $WshShell.CreateShortcut((Join-Path $dPath "Orime.lnk"))
+                $shortcutDesktop.TargetPath = $exePath
+                $shortcutDesktop.WorkingDirectory = $InstallPath
+                $shortcutDesktop.Description = "Orime Gaming Mode Optimizer"
+                $shortcutDesktop.IconLocation = "$exePath,0"
+                $shortcutDesktop.Save()
+                Write-Host "  -> Desktop shortcut: $dPath\Orime.lnk" -ForegroundColor DarkGray
+            } catch { }
+        }
 
-    $startMenuPath = [Environment]::GetFolderPath("Programs")
-    $shortcutStart = $WshShell.CreateShortcut((Join-Path $startMenuPath "Orime.lnk"))
-    $shortcutStart.TargetPath = $exePath
-    $shortcutStart.WorkingDirectory = $InstallPath
-    $shortcutStart.Description = "Orime Gaming Mode Optimizer"
-    $shortcutStart.Save()
+        $startMenuTargets = @(
+            [Environment]::GetFolderPath("Programs"),
+            [Environment]::GetFolderPath("CommonPrograms"),
+            "$env:APPDATA\Microsoft\Windows\Start Menu\Programs",
+            "$env:ProgramData\Microsoft\Windows\Start Menu\Programs"
+        ) | Where-Object { [string]::IsNullOrWhiteSpace($_) -eq $false -and (Test-Path $_) } | Select-Object -Unique
+
+        foreach ($sPath in $startMenuTargets) {
+            try {
+                $shortcutStart = $WshShell.CreateShortcut((Join-Path $sPath "Orime.lnk"))
+                $shortcutStart.TargetPath = $exePath
+                $shortcutStart.WorkingDirectory = $InstallPath
+                $shortcutStart.Description = "Orime Gaming Mode Optimizer"
+                $shortcutStart.IconLocation = "$exePath,0"
+                $shortcutStart.Save()
+            } catch { }
+        }
+        
+        Write-Host "  [OK] Shortcuts created on Desktop & Start Menu!" -ForegroundColor Green
+    } catch {
+        Write-Host "  [!] Shortcut notice: $($_.Exception.Message)" -ForegroundColor Yellow
+    }
+} else {
+    Write-Host "  [!] Warning: Orime.exe not found at $exePath" -ForegroundColor Yellow
 }
 
 Write-Host ""

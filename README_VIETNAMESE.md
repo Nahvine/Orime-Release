@@ -1,4 +1,4 @@
-<div align="center">
+﻿<div align=center>
 
 # Orime Optimizer
 
@@ -12,7 +12,7 @@
 
 <br/>
 
-<img src="assets/gaming_mode_preview.png" alt="Giao diện Orime Gaming Mode" width="850" />
+<img src=assets/gaming_mode_preview.png alt=Giao diện Orime Gaming Mode width=850 />
 
 </div>
 
@@ -20,16 +20,16 @@
 
 ## Vì sao nên dùng Orime?
 
-Nhiều công cụ "tối ưu Windows" trên mạng thực chất chỉ là file `.bat` hoặc file `.reg` gom nhặt, chỉnh sửa vĩnh viễn vào hệ thống khiến Windows Update bị lỗi, hỏng dịch vụ nền hoặc gây xanh màn hình (BSOD).
+Nhiều công cụ tối ưu Windows trên mạng thực chất chỉ là file .bat hoặc file .reg gom nhặt, chỉnh sửa vĩnh viễn vào hệ thống khiến Windows Update bị lỗi, hỏng dịch vụ nền hoặc gây xanh màn hình (BSOD).
 
 **Orime được thiết kế theo hướng an toàn và tôn trọng hệ thống:**
 
 1. **Khôi phục nguyên trạng 100% (Reversible)**: Trước khi tinh chỉnh bất kỳ cài đặt nào, Orime đều chụp lại trạng thái gốc của máy vào nhật ký (Journal). Khi bạn tắt Gaming Mode hoặc đóng ứng dụng, mọi thứ sẽ tự động hoàn trả về đúng như ban đầu.
 2. **Nhẹ và Native**: Viết bằng C# (.NET 10) với giao diện Fluent của WinUI 3, không dùng Electron hay bọc web nặng nề.
-3. **Thông số trung thực, không vẽ số liệu**: Không quảng cáo "tăng 500% FPS" ảo. Lượng RAM giải phóng được đo từ API hệ thống thực tế (`GlobalMemoryStatusEx`), đo ping DNS trực tiếp và hiển thị rõ ràng từng dịch vụ được xử lý.
+3. **Thông số trung thực, không vẽ số liệu**: Không quảng cáo tăng 500% FPS ảo. Lượng RAM giải phóng được đo từ API hệ thống thực tế (GlobalMemoryStatusEx), đo ping DNS trực tiếp và hiển thị rõ ràng từng dịch vụ được xử lý.
 
-<div align="center">
-<img src="assets/tweaks_preview.png" alt="Giao diện cấu hình tinh chỉnh Orime" width="850" />
+<div align=center>
+<img src=assets/tweaks_preview.png alt=Giao diện cấu hình tinh chỉnh Orime width=850 />
 </div>
 
 ---
@@ -41,8 +41,8 @@ Khi bạn nhấn **KÍCH HOẠT**, Orime thực hiện tối ưu theo từng t�
 * **Phase 0 — Đóng băng tiến trình ngầm & app phụ**: Tạm dừng các helper ngầm của trình duyệt (Chrome/Edge updater), phần mềm hãng (Razer Synapse, iCUE, Armoury Crate) để nhường toàn bộ CPU cho game. Không làm mất tab web hay đóng app đang mở.
 * **Phase 1 — Dịch vụ Windows không cần thiết**: Tạm dừng các dịch vụ theo dõi dữ liệu (Telemetry), Diagnostic Policy và dịch vụ in ấn ngầm.
 * **Phase 2 — Dọn dẹp RAM Standby & Windows 11 Shell**: Thu hồi vùng nhớ đệm rác và hoãn các tác vụ tự động bảo trì của Windows.
-* **Phase 3 — Tự động chọn DNS nhanh nhất (Smart DNS)**: Đo ping đến Cloudflare `1.1.1.1`, Google `8.8.8.8`, Quad9 và chuyển sang máy chủ có độ trễ thấp nhất. Nếu máy bạn đã tự chỉnh DNS xịn từ trước, app sẽ giữ nguyên. Bật `TCP NoDelay` để giảm giật lag mạng.
-* **Phase 4 — Tạm ẩn Windows Explorer (Tùy chọn)**: Tạm dừng `explorer.exe` trong lúc chơi game toàn màn hình để tiết kiệm 200–400MB RAM và giảm độ trễ dựng khung hình của DWM; tự động mở lại ngay khi thoát game.
+* **Phase 3 — Tự động chọn DNS nhanh nhất (Smart DNS)**: Đo ping đến Cloudflare 1.1.1.1, Google 8.8.8.8, Quad9 và chuyển sang máy chủ có độ trễ thấp nhất. Nếu máy bạn đã tự chỉnh DNS xịn từ trước, app sẽ giữ nguyên. Bật TCP NoDelay để giảm giật lag mạng.
+* **Phase 4 — Tạm ẩn Windows Explorer (Tùy chọn)**: Tạm dừng explorer.exe trong lúc chơi game toàn màn hình để tiết kiệm 200–400MB RAM và giảm độ trễ dựng khung hình của DWM; tự động mở lại ngay khi thoát game.
 * **Phase 5 — Giảm tải quét nền**: Hạ mức ưu tiên của trình quét virus khi bạn đang trong trận game.
 * **Phase 6 — Mở khóa phần cứng & Kernel Timer**: Mở khóa gói nguồn Ultimate Performance, đánh thức 100% nhân CPU (Unpark CPU Cores) và khóa độ phân giải đồng hồ hệ thống ở mức **0.5ms** để giảm tối đa độ trễ chuột/bàn phím.
 
@@ -56,15 +56,24 @@ Khi bạn nhấn **KÍCH HOẠT**, Orime thực hiện tối ưu theo từng t�
 
 ---
 
-## Cài Đặt Nhanh (1 Dòng Lệnh)
+## Lệnh Cài Đặt & Gỡ Bỏ 1-Click
 
-Mở **PowerShell** trên Windows và dán lệnh sau:
+### ⚡ Cài Đặt Mới / Cập Nhật Đè Lên Bản Cũ
+Mở **PowerShell** và dán lệnh:
 
-```powershell
+`powershell
 irm https://raw.githubusercontent.com/Nahvine/Orime-Release/main/install.ps1 | iex
-```
+`
+*(Nếu máy đã cài sẵn bản cũ, lệnh trên sẽ tự động đóng tiến trình cũ và ghi đè cập nhật sạch sẽ lên phiên bản mới nhất mà vẫn bảo lưu bản quyền/cấu hình của bạn).*
 
-Hoặc tải bản **Portable (chạy ngay không cần cài đặt)** từ [GitHub Releases](https://github.com/Nahvine/Orime-Release/releases), giải nén và mở file `Orime.exe`.
+### 🗑️ Gỡ Bỏ Hoàn Toàn (Uninstall)
+Mở **PowerShell** và dán lệnh sau để dọn dẹp toàn bộ file, shortcut và cache của Orime:
+
+`powershell
+irm https://raw.githubusercontent.com/Nahvine/Orime-Release/main/uninstall.ps1 | iex
+`
+
+Hoặc tải bản **Portable (chạy ngay không cần cài đặt)** từ [GitHub Releases](https://github.com/Nahvine/Orime-Release/releases), giải nén và mở file Orime.exe.
 
 ---
 

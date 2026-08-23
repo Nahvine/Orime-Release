@@ -1,4 +1,4 @@
-<div align="center">
+﻿<div align=center>
 
 # Orime Optimizer
 
@@ -12,7 +12,7 @@
 
 <br/>
 
-<img src="assets/gaming_mode_preview.png" alt="Orime Gaming Mode" width="850" />
+<img src=assets/gaming_mode_preview.png alt=Orime Gaming Mode width=850 />
 
 </div>
 
@@ -20,29 +20,29 @@
 
 ## Why Orime?
 
-Most Windows "tweakers" and "game optimizers" are just random PowerShell scripts or registry hacks that permanently break Windows Update, delete system components, or trigger anticheat flags.
+Most Windows tweakers and game optimizers are just random PowerShell scripts or registry hacks that permanently break Windows Update, delete system components, or trigger anticheat flags.
 
 **Orime is built differently:**
 
 1. **100% Reversible by Design**: Before applying any tweak, Orime captures the exact original state of your services, power plans, and registry keys into a local journal. When you turn off Gaming Mode (or exit), everything rolls back cleanly to how it was.
 2. **Native & Fast**: Written in modern C# on .NET 10 with a native WinUI 3 Fluent interface. No Electron, no bloated web wrappers.
-3. **No Bullshit / Honest Metrics**: No fake "boosted 500% FPS" claims. It shows actual freed RAM from `GlobalMemoryStatusEx`, real live process counts, and real DNS latency benchmarks.
+3. **No Bullshit / Honest Metrics**: No fake boosted 500% FPS claims. It shows actual freed RAM from GlobalMemoryStatusEx, real live process counts, and real DNS latency benchmarks.
 
-<div align="center">
-<img src="assets/tweaks_preview.png" alt="Orime Tweaks Configuration" width="850" />
+<div align=center>
+<img src=assets/tweaks_preview.png alt=Orime Tweaks Configuration width=850 />
 </div>
 
 ---
 
-## What Happens When You Hit "Kích Hoạt" (Activate)?
+## What Happens When You Hit Kích Hoạt (Activate)?
 
 Orime runs through up to 7 structured phases:
 
 * **Phase 0 — App & Browser Suspension**: Temporarily freezes heavy background helpers and OEM bloatware (Chrome/Edge updater helpers, Razer Synapse, Discord helpers) so they stop eating CPU cycles while you play. Your open tabs remain intact.
 * **Phase 1 — Non-Essential Services**: Pauses background telemetry, diagnostic tracing, and spooler tasks.
 * **Phase 2 — Windows 11 Shell Tuning**: Cleans up standby RAM (working sets) and pauses background indexing.
-* **Phase 3 — Smart DNS Routing & Latency**: Tests ping against top DNS providers (Cloudflare `1.1.1.1`, Google `8.8.8.8`, Quad9) and applies the fastest one. If your DNS is already optimal, it leaves it alone. Enables `TCP NoDelay`.
-* **Phase 4 — Explorer Shell Lifecycle (Optional)**: Can temporarily halt `explorer.exe` to free up 200–400MB RAM and eliminate DWM composition latency during full-screen games, then automatically brings it back.
+* **Phase 3 — Smart DNS Routing & Latency**: Tests ping against top DNS providers (Cloudflare 1.1.1.1, Google 8.8.8.8, Quad9) and applies the fastest one. If your DNS is already optimal, it leaves it alone. Enables TCP NoDelay.
+* **Phase 4 — Explorer Shell Lifecycle (Optional)**: Can temporarily halt explorer.exe to free up 200–400MB RAM and eliminate DWM composition latency during full-screen games, then automatically brings it back.
 * **Phase 5 — Antimalware Quiet Mode**: Lowers defender background scan priority during active game sessions.
 * **Phase 6 — Power & CPU Quantum**: Unparks CPU cores, activates the Ultimate Performance power scheme, and locks timer resolution to 0.5ms for lowest input lag.
 
@@ -56,15 +56,24 @@ Orime runs through up to 7 structured phases:
 
 ---
 
-## Quick Install
+## Quick 1-Click Commands
 
+### ⚡ Install / Update Orime
 Open **PowerShell** and run:
 
-```powershell
-irm https://github.com/Nahvine/Orime-Release/raw/main/install.ps1 | iex
-```
+`powershell
+irm https://raw.githubusercontent.com/Nahvine/Orime-Release/main/install.ps1 | iex
+`
+*(Running this command on an existing installation will cleanly update and overwrite old files while preserving your settings and activation license).*
 
-Or download the portable release from [GitHub Releases](https://github.com/Nahvine/Orime-Release/releases) / [download mirror](https://github.com/Nahvine/Orime-Release/raw/main/download/Orime_v1.0_Portable_x64.zip).
+### 🗑️ Complete Uninstall
+To completely remove Orime and all its shortcuts/data from your PC:
+
+`powershell
+irm https://raw.githubusercontent.com/Nahvine/Orime-Release/main/uninstall.ps1 | iex
+`
+
+Or download the portable package from [GitHub Releases](https://github.com/Nahvine/Orime-Release/releases) / [Direct Download](https://raw.githubusercontent.com/Nahvine/Orime-Release/main/download/Orime_v1.0_Portable_x64.zip).
 
 ---
 

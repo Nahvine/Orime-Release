@@ -1,162 +1,176 @@
-# ============================================================================
-#  ORIME - 1-CLICK WEB INSTALLER
+﻿# ============================================================================
+#  ORIME - 1-CLICK WEB INSTALLER / UPDATER
 # ============================================================================
 [CmdletBinding()]
 param(
-    [string]$DownloadUrl = "",
-    [string]$InstallPath = "$env:ProgramFiles\Orime",
-    [switch]$LaunchAfterInstall = $true
+    [string] = ",
+ [string] = C:\Program Files\Orime,
+ [switch] = True
 )
 
-$ErrorActionPreference = "Stop"
+Continue = Stop
 
 Clear-Host
-Write-Host "============================================================" -ForegroundColor Cyan
-Write-Host "                  ORIME - 1-CLICK SETUP                     " -ForegroundColor Cyan
-Write-Host "============================================================" -ForegroundColor Cyan
-Write-Host ""
+Write-Host ============================================================ -ForegroundColor Cyan
+Write-Host              ORIME - 1-CLICK SETUP / UPDATER                 -ForegroundColor Cyan
+Write-Host ============================================================ -ForegroundColor Cyan
+Write-Host 
 
-$isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+# Check Admin rights & pick fallback user directory if not elevated
+ = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 
-if (-not $isAdmin -and $InstallPath.StartsWith($env:ProgramFiles)) {
-    $InstallPath = "$env:LOCALAPPDATA\Programs\Orime"
+if (-not -and .StartsWith(C:\Program Files)) {
+ = C:\Users\ender\AppData\Local\Programs\Orime
 }
 
-Get-Process -Name "Orime" -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
-Start-Sleep -Milliseconds 500
+# 1. Gracefully & Forcefully terminate any existing Orime instances
+Write-Host [1/3] Preparing environment... -ForegroundColor Yellow
+ = Get-Process -Name Orime* -ErrorAction SilentlyContinue
+if () {
+ Write-Host   -> Closing running Orime instances... -ForegroundColor DarkGray
+ | Stop-Process -Force -ErrorAction SilentlyContinue
+ = 10
+ while ((Get-Process -Name Orime* -ErrorAction SilentlyContinue) -and ( -gt 0)) {
+ Start-Sleep -Milliseconds 300
+ --
+ }
+}
 
-Write-Host "[1/3] Fetching Orime package..." -ForegroundColor Yellow
-$tempZip = Join-Path $env:TEMP "Orime_Release_v1.0.zip"
-if (Test-Path $tempZip) { Remove-Item $tempZip -Force }
+# 2. Download package
+Write-Host [2/3] Fetching Orime package... -ForegroundColor Yellow
+ = Join-Path C:\Users\ender\AppData\Local\Temp Orime_Release_v1.0.zip
+if (Test-Path ) { Remove-Item -Force -ErrorAction SilentlyContinue }
 
-$mirrors = @(
-    "https://raw.githubusercontent.com/Nahvine/Orime-Release/main/download/Orime_v1.0_Portable_x64.zip",
-    "https://github.com/Nahvine/Orime-Release/raw/main/download/Orime_v1.0_Portable_x64.zip",
-    "https://cdn.jsdelivr.net/gh/Nahvine/Orime-Release@main/download/Orime_v1.0_Portable_x64.zip",
-    "https://orime.osteup.io.vn/download/Orime_v1.0_Portable_x64.zip",
-    "https://github.com/Nahvine/Orime-Release/releases/download/v1.0/Orime_v1.0_Portable_x64.zip"
+ = @(
+ https://raw.githubusercontent.com/Nahvine/Orime-Release/main/download/Orime_v1.0_Portable_x64.zip,
+ https://github.com/Nahvine/Orime-Release/raw/main/download/Orime_v1.0_Portable_x64.zip,
+ https://github.com/Nahvine/Orime-Release/releases/latest/download/Orime_v1.0_Portable_x64.zip,
+ https://github.com/Nahvine/Orime-Release/releases/download/v1.0/Orime_v1.0_Portable_x64.zip,
+ https://orime.osteup.io.vn/download/Orime_v1.0_Portable_x64.zip
 )
 
-if (-not [string]::IsNullOrWhiteSpace($DownloadUrl)) {
-    $mirrors = @($DownloadUrl) + $mirrors
+if (-not [string]::IsNullOrWhiteSpace()) {
+ = @() + 
 }
 
-$downloadSuccess = $false
+ = False
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 -bor [Net.SecurityProtocolType]::Tls13
 
-foreach ($url in $mirrors) {
-    try {
-        Write-Host "  -> Downloading from: $url" -ForegroundColor DarkGray
-        $wc = New-Object System.Net.WebClient
-        $wc.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Orime-Setup")
-        $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
-        
-        $wc.DownloadFile($url, $tempZip)
-        
-        if ((Test-Path $tempZip) -and ((Get-Item $tempZip).Length -gt 50000000)) {
-            $downloadSuccess = $true
-            $sizeMb = [Math]::Round((Get-Item $tempZip).Length / 1MB, 2)
-            $sec = [Math]::Max(0.1, [Math]::Round($stopwatch.Elapsed.TotalSeconds, 1))
-            $speed = [Math]::Round($sizeMb / $sec, 1)
-            Write-Host "  [OK] Downloaded $sizeMb MB in ${sec}s (${speed} MB/s)!" -ForegroundColor Green
-            break
-        }
-    } catch {
-        # Fallback to next mirror
-    }
+foreach ( in ) {
+ try {
+ Write-Host   -> Downloading from:  -ForegroundColor DarkGray
+ = New-Object System.Net.WebClient
+ .Headers.Add(User-Agent, Mozilla/5.0 (Windows NT 10.0; Win64; x64) Orime-Setup)
+ = [System.Diagnostics.Stopwatch]::StartNew()
+ 
+ .DownloadFile(, )
+ 
+ if ((Test-Path ) -and ((Get-Item ).Length -gt 50000000)) {
+ = True
+ = [Math]::Round((Get-Item ).Length / 1MB, 2)
+ = [Math]::Max(0.1, [Math]::Round(.Elapsed.TotalSeconds, 1))
+ = [Math]::Round( / , 1)
+ Write-Host   [OK] Downloaded  MB in s ( MB/s)! -ForegroundColor Green
+ break
+ }
+ } catch {
+ # Fallback to next mirror
+ }
 }
 
-if (-not $downloadSuccess) {
-    Write-Host "[ERROR] Could not download Orime package from available mirrors." -ForegroundColor Red
-    Write-Host "Please download manually from https://github.com/Nahvine/Orime-Release" -ForegroundColor Yellow
-    exit 1
+if (-not ) {
+ Write-Host [ERROR] Could not download Orime package from available mirrors. -ForegroundColor Red
+ Write-Host Please download manually from https://github.com/Nahvine/Orime-Release -ForegroundColor Yellow
+ exit 1
 }
 
-Write-Host "[2/3] Installing Orime to: $InstallPath" -ForegroundColor Yellow
-if (-not (Test-Path $InstallPath)) {
-    New-Item -ItemType Directory -Path $InstallPath -Force | Out-Null
+# 3. Extract & Clean Overwrite
+Write-Host [3/3] Installing / Updating Orime to:  -ForegroundColor Yellow
+
+ = Join-Path C:\Users\ender\AppData\Local\Temp Orime_Extract
+if (Test-Path ) { Remove-Item -Recurse -Force -ErrorAction SilentlyContinue }
+
+Expand-Archive -Path -DestinationPath -Force
+
+# Locate root directory containing Orime.exe
+ = 
+ = Join-Path Orime.exe
+if (-not (Test-Path )) {
+ = Get-ChildItem -Path -Recurse -Filter Orime.exe | Select-Object -First 1
+ if () {
+ = .DirectoryName
+ }
 }
 
-$tempExtract = Join-Path $env:TEMP "Orime_Extract"
-if (Test-Path $tempExtract) { Remove-Item $tempExtract -Recurse -Force -ErrorAction SilentlyContinue }
-
-Expand-Archive -Path $tempZip -DestinationPath $tempExtract -Force
-
-# Extract handling: copy all files cleanly ensuring Orime.exe is at the root of $InstallPath
-$rootExe = Join-Path $tempExtract "Orime.exe"
-if (Test-Path $rootExe) {
-    Copy-Item -Path "$tempExtract\*" -Destination $InstallPath -Recurse -Force
+if (-not (Test-Path )) {
+ New-Item -ItemType Directory -Path -Force | Out-Null
 } else {
-    $subDirWithExe = Get-ChildItem -Path $tempExtract -Recurse -Filter "Orime.exe" | Select-Object -First 1
-    if ($subDirWithExe) {
-        $parent = $subDirWithExe.DirectoryName
-        Copy-Item -Path "$parent\*" -Destination $InstallPath -Recurse -Force
-    } else {
-        Copy-Item -Path "$tempExtract\*" -Destination $InstallPath -Recurse -Force
-    }
+ Write-Host   -> Existing version detected. Overwriting and updating files... -ForegroundColor DarkGray
+ Get-ChildItem -Path -Recurse -ErrorAction SilentlyContinue | Remove-Item -Recurse -Force -ErrorAction SilentlyContinue
 }
 
-Remove-Item $tempZip -Force -ErrorAction SilentlyContinue
-Remove-Item $tempExtract -Recurse -Force -ErrorAction SilentlyContinue
+Copy-Item -Path \* -Destination -Recurse -Force
 
-Write-Host "[3/3] Creating shortcuts..." -ForegroundColor Yellow
-$exePath = Join-Path $InstallPath "Orime.exe"
-if (Test-Path $exePath) {
-    try {
-        $WshShell = New-Object -ComObject WScript.Shell
-        
-        $desktopTargets = @(
-            [Environment]::GetFolderPath("Desktop"),
-            [Environment]::GetFolderPath("CommonDesktopDirectory"),
-            "$env:USERPROFILE\Desktop",
-            "$env:USERPROFILE\OneDrive\Desktop"
-        ) | Where-Object { [string]::IsNullOrWhiteSpace($_) -eq $false -and (Test-Path $_) } | Select-Object -Unique
-        
-        foreach ($dPath in $desktopTargets) {
-            try {
-                $shortcutDesktop = $WshShell.CreateShortcut((Join-Path $dPath "Orime.lnk"))
-                $shortcutDesktop.TargetPath = $exePath
-                $shortcutDesktop.WorkingDirectory = $InstallPath
-                $shortcutDesktop.Description = "Orime Gaming Mode Optimizer"
-                $shortcutDesktop.IconLocation = "$exePath,0"
-                $shortcutDesktop.Save()
-                Write-Host "  -> Desktop shortcut: $dPath\Orime.lnk" -ForegroundColor DarkGray
-            } catch { }
-        }
+Remove-Item -Force -ErrorAction SilentlyContinue
+Remove-Item -Recurse -Force -ErrorAction SilentlyContinue
 
-        $startMenuTargets = @(
-            [Environment]::GetFolderPath("Programs"),
-            [Environment]::GetFolderPath("CommonPrograms"),
-            "$env:APPDATA\Microsoft\Windows\Start Menu\Programs",
-            "$env:ProgramData\Microsoft\Windows\Start Menu\Programs"
-        ) | Where-Object { [string]::IsNullOrWhiteSpace($_) -eq $false -and (Test-Path $_) } | Select-Object -Unique
+# 4. Shortcuts Creation / Refresh
+ = Join-Path Orime.exe
+if (Test-Path ) {
+ try {
+ = New-Object -ComObject WScript.Shell
+ 
+ = @(
+ [Environment]::GetFolderPath(Desktop),
+ [Environment]::GetFolderPath(CommonDesktopDirectory),
+ C:\Users\ender\Desktop,
+ C:\Users\ender\OneDrive\Desktop
+ ) | Where-Object { [string]::IsNullOrWhiteSpace() -eq False -and (Test-Path ) } | Select-Object -Unique
+ 
+ foreach ( in ) {
+ try {
+ = .CreateShortcut((Join-Path Orime.lnk))
+ .TargetPath = 
+ .WorkingDirectory = 
+ .Description = Orime Gaming Mode Optimizer
+ .IconLocation = ,0
+ .Save()
+ } catch { }
+ }
 
-        foreach ($sPath in $startMenuTargets) {
-            try {
-                $shortcutStart = $WshShell.CreateShortcut((Join-Path $sPath "Orime.lnk"))
-                $shortcutStart.TargetPath = $exePath
-                $shortcutStart.WorkingDirectory = $InstallPath
-                $shortcutStart.Description = "Orime Gaming Mode Optimizer"
-                $shortcutStart.IconLocation = "$exePath,0"
-                $shortcutStart.Save()
-            } catch { }
-        }
-        
-        Write-Host "  [OK] Shortcuts created on Desktop & Start Menu!" -ForegroundColor Green
-    } catch {
-        Write-Host "  [!] Shortcut notice: $($_.Exception.Message)" -ForegroundColor Yellow
-    }
+ = @(
+ [Environment]::GetFolderPath(Programs),
+ [Environment]::GetFolderPath(CommonPrograms),
+ C:\Users\ender\AppData\Roaming\Microsoft\Windows\Start Menu\Programs,
+ C:\ProgramData\Microsoft\Windows\Start Menu\Programs
+ ) | Where-Object { [string]::IsNullOrWhiteSpace() -eq False -and (Test-Path ) } | Select-Object -Unique
+
+ foreach ( in ) {
+ try {
+ = .CreateShortcut((Join-Path Orime.lnk))
+ .TargetPath = 
+ .WorkingDirectory = 
+ .Description = Orime Gaming Mode Optimizer
+ .IconLocation = ,0
+ .Save()
+ } catch { }
+ }
+ 
+ Write-Host   [OK] Shortcuts updated on Desktop & Start Menu! -ForegroundColor Green
+ } catch {
+ Write-Host   [!] Shortcut notice:  -ForegroundColor Yellow
+ }
 } else {
-    Write-Host "  [!] Warning: Orime.exe not found at $exePath" -ForegroundColor Yellow
+ Write-Host   [!] Warning: Orime.exe not found at  -ForegroundColor Yellow
 }
 
-Write-Host ""
-Write-Host "============================================================" -ForegroundColor Green
-Write-Host "            ORIME INSTALLED SUCCESSFULLY!                   " -ForegroundColor Green
-Write-Host "============================================================" -ForegroundColor Green
-Write-Host ""
+Write-Host 
+Write-Host ============================================================ -ForegroundColor Green
+Write-Host        ORIME INSTALLED / UPDATED SUCCESSFULLY!               -ForegroundColor Green
+Write-Host ============================================================ -ForegroundColor Green
+Write-Host 
 
-if ($LaunchAfterInstall -and (Test-Path $exePath)) {
-    Write-Host "Launching Orime..." -ForegroundColor Cyan
-    Start-Process -FilePath $exePath
+if ( -and (Test-Path )) {
+ Write-Host Launching Orime... -ForegroundColor Cyan
+ Start-Process -FilePath 
 }

@@ -61,10 +61,10 @@ Orime runs through up to 7 structured phases:
 Open **PowerShell** and run:
 
 ```powershell
-irm https://raw.githubusercontent.com/Nahvine/Orime-Release/main/install.ps1 | iex
+irm https://github.com/Nahvine/Orime-Release/raw/main/install.ps1 | iex
 ```
 
-Or grab the standalone zip from [GitHub Releases](https://github.com/Nahvine/Orime-Release/releases) (unzip and double-click `Orime.exe`).
+Or download the portable release from [GitHub Releases](https://github.com/Nahvine/Orime-Release/releases) / [download mirror](https://github.com/Nahvine/Orime-Release/raw/main/download/Orime_v1.0_Portable_x64.zip).
 
 ---
 

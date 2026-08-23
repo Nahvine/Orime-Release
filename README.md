@@ -1,79 +1,74 @@
 <div align="center">
 
-# ⚡ Orime Optimizer
+# Orime Optimizer
 
-**The Next-Gen, High-Performance Native Windows & Game Optimization Suite**
+**A clean, reversible Windows game optimizer built with WinUI 3 and .NET 10.**
 
-[![Platform](https://img.shields.io/badge/Platform-Windows%2010%20%7C%2011%20x64-blue?style=for-the-badge&logo=windows)](https://github.com/Nahvine/Orime-Release)
-[![Framework](https://img.shields.io/badge/Framework-WinUI%203%20%7C%20.NET%2010-purple?style=for-the-badge&logo=dotnet)](https://github.com/Nahvine/Orime-Release)
-[![Design](https://img.shields.io/badge/UI-Fluent%20Design%20System-0078D4?style=for-the-badge&logo=microsoft)](https://github.com/Nahvine/Orime-Release)
-[![License](https://img.shields.io/badge/License-Proprietary-red?style=for-the-badge)](https://github.com/Nahvine/Orime-Release)
+[![Platform](https://img.shields.io/badge/Windows-10%20%7C%2011%20(64--bit)-0078D4?style=flat-square&logo=windows)](https://github.com/Nahvine/Orime-Release)
+[![Framework](https://img.shields.io/badge/WinUI%203-.NET%2010-512BD4?style=flat-square&logo=dotnet)](https://github.com/Nahvine/Orime-Release)
+[![License](https://img.shields.io/badge/License-Proprietary-gray?style=flat-square)](https://github.com/Nahvine/Orime-Release)
 
-[**🌐 Official Website**](https://orime.osteup.io.vn) • [**📖 Tiếng Việt**](README_VIETNAMESE.md) • [**📦 Download Latest Release**](https://github.com/Nahvine/Orime-Release/releases)
+[**Website**](https://orime.osteup.io.vn) • [**Bản Tiếng Việt**](README_VIETNAMESE.md) • [**Download Releases**](https://github.com/Nahvine/Orime-Release/releases)
 
 <br/>
 
-<img src="assets/gaming_mode_preview.png" alt="Orime Gaming Mode" width="850" style="border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);" />
+<img src="assets/gaming_mode_preview.png" alt="Orime Gaming Mode" width="850" />
 
 </div>
 
 ---
 
-## 🌟 Overview
+## Why Orime?
 
-**Orime** is a modern, enterprise-grade game optimization engine built natively with **WinUI 3 (Windows App SDK)** and **.NET 10**. Designed with a non-destructive, transaction-safe architecture, Orime unlocks maximum FPS, eliminates stutter, reduces system DPC latency to **0.5ms**, and recovers gigabytes of standby RAM—all reversibly with 1-click restore.
+Most Windows "tweakers" and "game optimizers" are just random PowerShell scripts or registry hacks that permanently break Windows Update, delete system components, or trigger anticheat flags.
+
+**Orime is built differently:**
+
+1. **100% Reversible by Design**: Before applying any tweak, Orime captures the exact original state of your services, power plans, and registry keys into a local journal. When you turn off Gaming Mode (or exit), everything rolls back cleanly to how it was.
+2. **Native & Fast**: Written in modern C# on .NET 10 with a native WinUI 3 Fluent interface. No Electron, no bloated web wrappers.
+3. **No Bullshit / Honest Metrics**: No fake "boosted 500% FPS" claims. It shows actual freed RAM from `GlobalMemoryStatusEx`, real live process counts, and real DNS latency benchmarks.
 
 <div align="center">
-<img src="assets/tweaks_preview.png" alt="Orime Tweaks Configuration" width="850" style="border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);" />
+<img src="assets/tweaks_preview.png" alt="Orime Tweaks Configuration" width="850" />
 </div>
 
 ---
 
-## ✨ Key Features & 7-Phase Engine
+## What Happens When You Hit "Kích Hoạt" (Activate)?
 
-Orime orchestrates system tuning through **7 dedicated optimization phases**:
+Orime runs through up to 7 structured phases:
 
-- **🚀 Phase 0 — Smart Third-Party App & Browser Freeze**: Automatically suspends background helpers, browser updaters, OEM bloatware (iCUE, Armoury Crate, Synapse) without losing your tabs.
-- **🛡️ Phase 1 — Non-Destructive Windows Services Debloat**: Toggles telemetry, diagnostic tracking, and background services with pre-capture state snapshots.
-- **⚡ Phase 2 — Windows 11 Shell & Maintenance Purge**: Halts Widgets, OneDrive sync, GameDVR, and triggers real-time Working Set RAM cleanup.
-- **🌐 Phase 3 — Smart DNS Benchmark & Network QoS**: Benchmarks Cloudflare, Google, and Quad9 in real-time, applies lowest-latency DNS with `TCP NoDelay` and `NetworkThrottlingIndex` disabled.
-- **🖥️ Phase 4 — Explorer Shell Lifecycle**: Closes `explorer.exe` during gameplay to free 150-400MB RAM & eliminate DWM frame latency; seamlessly relaunches on exit.
-- **🔒 Phase 5 — Security & Antimalware Tuning**: Temporarily suppresses SmartScreen verification and real-time scanning overhead during gaming sessions.
-- **⚙️ Phase 6 — Kernel Scheduler & Hardware Power Scheme**: Activates the hidden **Ultimate Performance** power plan, unparks 100% CPU cores, and forces **3:1 Win32 Priority Quantum Boost**.
-
----
-
-## 🎯 3 Curated Optimization Profiles
-
-| Preset | Target User | What's Included |
-| :--- | :--- | :--- |
-| **🟢 Safe Mode** | Everyday users & casual gamers | Helper apps only, low-risk services, Ultimate Power plan. Preserves full browsers, chat (Discord/Zalo/Telegram), and Windows Search/Hello. |
-| **🟣 Normal Mode** | Esport & AAA Gamers (Recommended) | Full app freeze with launcher smart-checks, RAM memory purge, Explorer lifecycle, 0.5ms kernel timer, and CPU core unparking. |
-| **🔴 Extreme Mode** | Competitive & Tournament Play | 100% maximum power unlocking, sensitive network service suspension, and full real-time antimalware pause. |
+* **Phase 0 — App & Browser Suspension**: Temporarily freezes heavy background helpers and OEM bloatware (Chrome/Edge updater helpers, Razer Synapse, Discord helpers) so they stop eating CPU cycles while you play. Your open tabs remain intact.
+* **Phase 1 — Non-Essential Services**: Pauses background telemetry, diagnostic tracing, and spooler tasks.
+* **Phase 2 — Windows 11 Shell Tuning**: Cleans up standby RAM (working sets) and pauses background indexing.
+* **Phase 3 — Smart DNS Routing & Latency**: Tests ping against top DNS providers (Cloudflare `1.1.1.1`, Google `8.8.8.8`, Quad9) and applies the fastest one. If your DNS is already optimal, it leaves it alone. Enables `TCP NoDelay`.
+* **Phase 4 — Explorer Shell Lifecycle (Optional)**: Can temporarily halt `explorer.exe` to free up 200–400MB RAM and eliminate DWM composition latency during full-screen games, then automatically brings it back.
+* **Phase 5 — Antimalware Quiet Mode**: Lowers defender background scan priority during active game sessions.
+* **Phase 6 — Power & CPU Quantum**: Unparks CPU cores, activates the Ultimate Performance power scheme, and locks timer resolution to 0.5ms for lowest input lag.
 
 ---
 
-## ⚡ 1-Click Fast Web Installer
+## 3 Simple Modes
 
-Open **PowerShell** (as Administrator or normal user) and run:
+* **Safe Mode**: Great for casual gaming and streaming. Pauses background updaters and enables power tweaks without touching web browsers, Discord, or system search.
+* **Normal Mode (Recommended)**: The sweet spot for esports and AAA titles. Adds RAM purging, smart app freezing, 0.5ms timer, and CPU core unparking.
+* **Extreme Mode**: For tournament matches or low-spec systems where every frame and millisecond matters.
+
+---
+
+## Quick Install
+
+Open **PowerShell** and run:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/Nahvine/Orime-Release/main/install.ps1 | iex"
+irm https://raw.githubusercontent.com/Nahvine/Orime-Release/main/install.ps1 | iex
 ```
 
-Or download the **Standalone Portable Edition (Zero Installation)** directly from [GitHub Releases](https://github.com/Nahvine/Orime-Release/releases).
+Or grab the standalone zip from [GitHub Releases](https://github.com/Nahvine/Orime-Release/releases) (unzip and double-click `Orime.exe`).
 
 ---
 
-## 📋 System Requirements
+## System Requirements
 
-- **Operating System**: Windows 10 (Version 1903+) or Windows 11 (64-bit x64)
-- **Runtime**: Windows App SDK 1.6+ (Embedded self-contained in Portable edition)
-- **Architecture**: x64 (AMD64 / Intel 64)
-
----
-
-## 📜 License & Copyright
-
-Copyright © 2026 **Orime Optimizer**. All rights reserved.  
-Official Gateway & License Management: [https://orime.osteup.io.vn](https://orime.osteup.io.vn)
+* Windows 10 (version 1903+) or Windows 11 (64-bit)
+* Administrator privileges recommended for service and kernel timer adjustments

@@ -1,76 +1,74 @@
 <div align="center">
 
-# ⚡ Orime Optimizer
+# Orime Optimizer
 
-**Bộ Công Cụ Tối Ưu Hóa Hiệu Năng Windows & Gaming Chuyên Nghiệp**
+**Ứng dụng tối ưu Windows và giảm độ trễ khi chơi game, viết bằng WinUI 3 & .NET 10.**
 
-[![Nền tảng](https://img.shields.io/badge/Nền%20tảng-Windows%2010%20%7C%2011%20x64-blue?style=for-the-badge&logo=windows)](https://github.com/Nahvine/Orime-Release)
-[![Công nghệ](https://img.shields.io/badge/Công%20nghệ-WinUI%203%20%7C%20.NET%2010-purple?style=for-the-badge&logo=dotnet)](https://github.com/Nahvine/Orime-Release)
-[![Giao diện](https://img.shields.io/badge/Giao%20diện-Fluent%20Design%20System-0078D4?style=for-the-badge&logo=microsoft)](https://github.com/Nahvine/Orime-Release)
+[![Nền tảng](https://img.shields.io/badge/Windows-10%20%7C%2011%20(64--bit)-0078D4?style=flat-square&logo=windows)](https://github.com/Nahvine/Orime-Release)
+[![Công nghệ](https://img.shields.io/badge/WinUI%203-.NET%2010-512BD4?style=flat-square&logo=dotnet)](https://github.com/Nahvine/Orime-Release)
+[![Bản quyền](https://img.shields.io/badge/Bản%20quyền-Proprietary-gray?style=flat-square)](https://github.com/Nahvine/Orime-Release)
 
-[**🌐 Trang Chủ Chính Thức**](https://orime.osteup.io.vn) • [**📖 English Version**](README.md) • [**📦 Tải Bản Release Mới Nhất**](https://github.com/Nahvine/Orime-Release/releases)
+[**Trang Chủ**](https://orime.osteup.io.vn) • [**English README**](README.md) • [**Tải Bản Mới Nhất**](https://github.com/Nahvine/Orime-Release/releases)
 
 <br/>
 
-<img src="assets/gaming_mode_preview.png" alt="Orime Gaming Mode Giao Diện" width="850" style="border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);" />
+<img src="assets/gaming_mode_preview.png" alt="Giao diện Orime Gaming Mode" width="850" />
 
 </div>
 
 ---
 
-## 🌟 Giới Thiệu
+## Vì sao nên dùng Orime?
 
-**Orime** là ứng dụng tối ưu hóa Windows và Gaming hiện đại được xây dựng hoàn toàn bằng **WinUI 3 (Windows App SDK)** và **.NET 10**. Với kiến trúc an toàn 2 tầng và nhật ký giao dịch (Transaction Journal), Orime giúp khai thác tối đa FPS, triệt tiêu độ trễ chuột/bàn phím (Kernel Timer **0.5ms**), tự động thu hồi Gigabyte RAM rác và có khả năng **khôi phục 100% nguyên trạng hệ thống** chỉ với 1 click.
+Nhiều công cụ "tối ưu Windows" trên mạng thực chất chỉ là file `.bat` hoặc file `.reg` gom nhặt, chỉnh sửa vĩnh viễn vào hệ thống khiến Windows Update bị lỗi, hỏng dịch vụ nền hoặc gây xanh màn hình (BSOD).
+
+**Orime được thiết kế theo hướng an toàn và tôn trọng hệ thống:**
+
+1. **Khôi phục nguyên trạng 100% (Reversible)**: Trước khi tinh chỉnh bất kỳ cài đặt nào, Orime đều chụp lại trạng thái gốc của máy vào nhật ký (Journal). Khi bạn tắt Gaming Mode hoặc đóng ứng dụng, mọi thứ sẽ tự động hoàn trả về đúng như ban đầu.
+2. **Nhẹ và Native**: Viết bằng C# (.NET 10) với giao diện Fluent của WinUI 3, không dùng Electron hay bọc web nặng nề.
+3. **Thông số trung thực, không vẽ số liệu**: Không quảng cáo "tăng 500% FPS" ảo. Lượng RAM giải phóng được đo từ API hệ thống thực tế (`GlobalMemoryStatusEx`), đo ping DNS trực tiếp và hiển thị rõ ràng từng dịch vụ được xử lý.
 
 <div align="center">
-<img src="assets/tweaks_preview.png" alt="Cấu Hình Tinh Chỉnh Orime" width="850" style="border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);" />
+<img src="assets/tweaks_preview.png" alt="Giao diện cấu hình tinh chỉnh Orime" width="850" />
 </div>
 
 ---
 
-## ✨ 7 Phase Tối Ưu Hóa Chuyên Sâu
+## 7 Phase Tinh Chỉnh Khi Bật Gaming Mode
 
-- **🚀 Phase 0 — Đóng Băng Ứng Dụng Bên Thứ 3 & Trình Duyệt**: Tự động tạm dừng các helper ngầm, trình cập nhật, phần mềm OEM (iCUE, Armoury Crate, Razer Synapse) mà không làm mất tab duyệt web hay ứng dụng đang mở.
-- **🛡️ Phase 1 — Tạm Dừng Dịch Vụ Windows Background**: Giảm tải Telemetry, Diagnostic Policy, Print Spooler ngầm với cơ chế chụp trạng thái $T_0$ an toàn.
-- **⚡ Phase 2 — Dọn Dẹp Shell Windows 11 & Tác Vụ Bảo Trì**: Đóng băng Widgets, hoãn tác vụ quét đĩa nặng nề và giải phóng bộ nhớ RAM Working Set tức thì.
-- **🌐 Phase 3 — Đo Ping Smart DNS & Tối Ưu Mạng QoS**: Tự động đo Ping Cloudflare 1.1.1.1, Google 8.8.8.8, Quad9; chuyển sang DNS thấp nhất và bật `TCP NoDelay` chống nghẽn gói tin.
-- **🖥️ Phase 4 — Quản Lý Vòng Đời Windows Explorer**: Tắt hoàn toàn `explorer.exe` khi chơi game để giải phóng 150-400MB RAM & triệt tiêu độ trễ DWM; tự động mở lại khi thoát game.
-- **🔒 Phase 5 — Giảm Tải Windows Defender**: Tạm hoãn xác minh SmartScreen và quét virus thời gian thực trong phiên chơi game.
-- **⚙️ Phase 6 — Tinh Chỉnh Kernel, CPU Core Parking & Power Plan**: Mở khóa sơ đồ nguồn **Ultimate Performance**, đánh thức 100% nhân CPU (Unpark Cores) và phân bổ lượng tử CPU **3:1 Quantum Boost** cho game.
+Khi bạn nhấn **KÍCH HOẠT**, Orime thực hiện tối ưu theo từng tầng rõ ràng:
 
----
-
-## 🎯 3 Chế Độ Tối Ưu Được Thiết Kế Khoa Học
-
-| Chế Độ | Đối Tượng Sử Dụng | Tính Năng Nổi Bật |
-| :--- | :--- | :--- |
-| **🟢 Safe Mode** | Người dùng phổ thông & làm việc | Chỉ dừng helper/updater, dịch vụ Low Risk, giữ nguyên chat (Discord/Zalo/Tele) và Windows Hello/Search. Bật gói nguồn Ultimate Performance. |
-| **🟣 Normal Mode** | Game thủ Esport & AAA *(Khuyên Dùng)* | Đóng băng ứng dụng thông minh, Dọn RAM Standby, Tắt Explorer khi chơi game, Timer 0.5ms, Mở khóa CPU Core Parking. |
-| **🔴 Extreme Mode** | Thi đấu chuyên nghiệp & Máy cấu hình cao | Mở khóa toàn bộ 100% 7 Phases, can thiệp dịch vụ mạng nhạy cảm và tạm hoãn Windows Defender. |
+* **Phase 0 — Đóng băng tiến trình ngầm & app phụ**: Tạm dừng các helper ngầm của trình duyệt (Chrome/Edge updater), phần mềm hãng (Razer Synapse, iCUE, Armoury Crate) để nhường toàn bộ CPU cho game. Không làm mất tab web hay đóng app đang mở.
+* **Phase 1 — Dịch vụ Windows không cần thiết**: Tạm dừng các dịch vụ theo dõi dữ liệu (Telemetry), Diagnostic Policy và dịch vụ in ấn ngầm.
+* **Phase 2 — Dọn dẹp RAM Standby & Windows 11 Shell**: Thu hồi vùng nhớ đệm rác và hoãn các tác vụ tự động bảo trì của Windows.
+* **Phase 3 — Tự động chọn DNS nhanh nhất (Smart DNS)**: Đo ping đến Cloudflare `1.1.1.1`, Google `8.8.8.8`, Quad9 và chuyển sang máy chủ có độ trễ thấp nhất. Nếu máy bạn đã tự chỉnh DNS xịn từ trước, app sẽ giữ nguyên. Bật `TCP NoDelay` để giảm giật lag mạng.
+* **Phase 4 — Tạm ẩn Windows Explorer (Tùy chọn)**: Tạm dừng `explorer.exe` trong lúc chơi game toàn màn hình để tiết kiệm 200–400MB RAM và giảm độ trễ dựng khung hình của DWM; tự động mở lại ngay khi thoát game.
+* **Phase 5 — Giảm tải quét nền**: Hạ mức ưu tiên của trình quét virus khi bạn đang trong trận game.
+* **Phase 6 — Mở khóa phần cứng & Kernel Timer**: Mở khóa gói nguồn Ultimate Performance, đánh thức 100% nhân CPU (Unpark CPU Cores) và khóa độ phân giải đồng hồ hệ thống ở mức **0.5ms** để giảm tối đa độ trễ chuột/bàn phím.
 
 ---
 
-## ⚡ Cài Đặt 1-Click Siêu Tốc (Web Installer)
+## 3 Chế Độ Lựa Chọn Nhanh
 
-Mở **PowerShell** trên máy tính của bạn và dán lệnh sau:
+* **🟢 Safe Mode**: Dành cho người dùng phổ thông, vừa chơi game vừa lướt web hoặc gọi Discord/Zalo. Chỉ dừng các helper ngầm và bật gói nguồn tối ưu mà không đụng tới ứng dụng chính.
+* **🟣 Normal Mode (Khuyên Dùng)**: Cân bằng tốt nhất cho game thủ Esport và game AAA. Bổ sung dọn RAM, timer 0.5ms và mở khóa toàn bộ nhân CPU.
+* **🔴 Extreme Mode**: Dành cho máy cấu hình yếu hoặc các trận đấu thi đấu cần vắt kiệt từng khung hình và mili-giây độ trễ.
+
+---
+
+## Cài Đặt Nhanh (1 Dòng Lệnh)
+
+Mở **PowerShell** trên Windows và dán lệnh sau:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/Nahvine/Orime-Release/main/install.ps1 | iex"
+irm https://raw.githubusercontent.com/Nahvine/Orime-Release/main/install.ps1 | iex
 ```
 
-Hoặc tải bản **Portable Chạy Ngay (Không Cần Cài Đặt)** trực tiếp tại [GitHub Releases](https://github.com/Nahvine/Orime-Release/releases).
+Hoặc tải bản **Portable (chạy ngay không cần cài đặt)** từ [GitHub Releases](https://github.com/Nahvine/Orime-Release/releases), giải nén và mở file `Orime.exe`.
 
 ---
 
-## 📋 Yêu Cầu Hệ Thống
+## Yêu Cầu Hệ Thống
 
-- **Hệ Điều Hành**: Windows 10 (Phiên bản 1903 trở lên) hoặc Windows 11 (64-bit x64)
-- **Kiến Trúc Phần Cứng**: x64 (Intel / AMD)
-- **Dung Lượng Trống**: ~200 MB
-
----
-
-## 📜 Bản Quyền & Giấy Phép
-
-Bản quyền thuộc về © 2026 **Orime Optimizer**.  
-Hệ Thống Phân Phối & Kích Hoạt Bản Quyền: [https://orime.osteup.io.vn](https://orime.osteup.io.vn)
+* Windows 10 (bản 1903 trở lên) hoặc Windows 11 (64-bit)
+* Khuyên dùng quyền Administrator để app có thể điều chỉnh timer kernel và dịch vụ hệ thống

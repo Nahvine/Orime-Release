@@ -38,6 +38,9 @@ Unlike static tweak scripts that make permanent registry edits, Orime saves a sn
 4. **Play your game**: Run your game normally.
 5. **Restore settings**: When finished, click **Tắt** (Deactivate) or close Orime. A restore report will confirm that your system settings have returned to their original state.
 
+> [!NOTE]
+> If you enable **Phase 4 (Explorer Shell Suspension)**, the Windows taskbar and desktop will temporarily disappear to save memory and reduce render latency. Use `Alt + Tab` to switch between open windows. If you ever need to restore the desktop manually, press `Ctrl + Shift + Esc` to open Task Manager, click **Run new task**, type `explorer.exe`, and press Enter.
+
 ---
 
 ## How Gaming Mode Works
@@ -61,25 +64,6 @@ When activated, Orime applies optimizations across seven sequential phases:
 * **Safe Mode**: Suspends background updaters and applies power tweaks. Leaves web browsers, Discord, and Windows Search untouched.
 * **Normal Mode**: Recommended for most games. Adds standby memory clearing, 0.5 ms timer resolution, and CPU core unparking.
 * **Extreme Mode**: Intended for low-spec hardware or competitive play where reducing latency is the priority.
-
----
-
-## Frequently Asked Questions
-
-### Can this trigger an anticheat ban in online games?
-**No.** Orime works strictly at the Windows operating system level (power plans, system services, memory cache, and network parameters). It does not inject code, hook game processes, modify game files, or touch game memory. It is fully compatible with Riot Vanguard, Easy Anti-Cheat, BattlEye, Valve Anti-Cheat (VAC), and Ricochet.
-
-### Does Orime make permanent changes or break Windows Update?
-**No.** Every modification is recorded in a local state journal before application. When you turn off Gaming Mode or exit the app, Orime rolls back each setting to its exact pre-activation state. Windows Update and core system components remain intact.
-
-### What happens if my PC crashes or loses power while Gaming Mode is on?
-On the next launch, Orime detects the unfinished session from the saved journal and automatically restores your original system settings.
-
-### Do I need an internet connection to use Orime?
-**No.** All core optimization phases work locally and offline. Network tests (DNS ping measurements in Phase 3) will simply skip if no connection is present.
-
-### Does Phase 0 close my open browser tabs?
-**No.** Phase 0 only suspends background updater and helper services (such as browser update checkers). Your browser windows, tabs, and active applications remain open.
 
 ---
 
@@ -124,4 +108,17 @@ If you prefer not to use the installer:
 
 * Windows 10 or Windows 11 (64-bit).
 * Administrator rights (required for adjusting the 0.5 ms kernel timer and Windows service states).
-* The portable download includes the required .NET 10 runtime files.
+* If you encounter startup errors, ensure the latest [.NET Desktop Runtime](https://dotnet.microsoft.com/download/dotnet) and [Visual C++ Redistributable](https://learn.microsoft.com/cpp/windows/latest-supported-vc-redist) are installed.
+
+---
+
+## Frequently Asked Questions
+
+### Can this trigger an anticheat ban in online games?
+**No.** Orime works strictly at the Windows operating system level (power plans, system services, memory cache, and network parameters). It does not inject code, hook game processes, modify game files, or touch game memory. It is fully compatible with Riot Vanguard, Easy Anti-Cheat, BattlEye, Valve Anti-Cheat (VAC), and Ricochet.
+
+### Does Orime make permanent changes or break Windows Update?
+**No.** Every modification is recorded in a local state journal before application. When you turn off Gaming Mode or exit the app, Orime rolls back each setting to its exact pre-activation state. Windows Update and core system components remain intact.
+
+### What happens if my PC crashes or loses power while Gaming Mode is on?
+On the next launch, Orime detects the unfinished session from the saved journal and automatically restores your original system settings.

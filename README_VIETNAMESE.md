@@ -38,6 +38,9 @@ Khác với các script tinh chỉnh ghi đè registry vĩnh viễn, Orime lưu 
 4. **Vào game**: Chơi game bình thường với tài nguyên máy được tối ưu cho game.
 5. **Hoàn tác cài đặt**: Khi chơi xong, nhấn nút **Tắt** hoặc đóng Orime. Bảng báo cáo khôi phục sẽ xác nhận hệ thống đã trở về 100% trạng thái ban đầu.
 
+> [!NOTE]
+> Nếu bạn bật **Phase 4 (Tạm ẩn Explorer)**, thanh Taskbar và màn hình Desktop sẽ tạm thời ẩn đi để tiết kiệm RAM và giảm độ trễ dựng hình. Hãy dùng tổ hợp phím `Alt + Tab` để chuyển đổi qua lại giữa các cửa sổ ứng dụng. Nếu cần mở lại Explorer thủ công, hãy nhấn `Ctrl + Shift + Esc` để mở Task Manager, chọn **Run new task**, gõ `explorer.exe` và nhấn Enter.
+
 ---
 
 ## Cơ chế hoạt động của Chế độ Chơi Game
@@ -61,25 +64,6 @@ Khi bạn bật tính năng, Orime sẽ tối ưu hệ thống qua 7 giai đoạ
 * **Safe Mode**: Phù hợp khi bạn vừa chơi game vừa mở trình duyệt, nghe nhạc hoặc gọi Discord. Chỉ tạm dừng các trình updater ngầm và kích hoạt gói nguồn tối ưu.
 * **Normal Mode**: Chế độ tiêu chuẩn cho hầu hết các tựa game. Bổ sung xả bộ nhớ đệm RAM, mở khóa nhân CPU và khóa timer ở mức 0.5 ms.
 * **Extreme Mode**: Phù hợp cho máy cấu hình thấp hoặc khi bạn cần ưu tiên tối đa cho độ phản hồi trong game.
-
----
-
-## Câu hỏi thường gặp (FAQ)
-
-### Dùng Orime có bị khóa tài khoản game (Ban acc) không?
-**Hoàn toàn không.** Orime chỉ tinh chỉnh ở tầng hệ điều hành Windows (gói nguồn, dịch vụ hệ thống, bộ nhớ đệm RAM, độ phân giải timer và thiết lập mạng). Phần mềm không can thiệp vào tệp tin của game, không hook tiến trình và không đọc ghi bộ nhớ game. Ứng dụng an toàn tuyệt đối với mọi hệ thống chống gian lận như Riot Vanguard, Easy Anti-Cheat, BattlEye, VAC hay Ricochet.
-
-### Orime có làm hỏng Windows Update hay lỗi win không?
-**Không.** Trước khi đổi bất kỳ thiết lập nào, Orime đều sao lưu trạng thái gốc vào tệp nhật ký (Journal). Khi bạn tắt Gaming Mode hoặc thoát ứng dụng, toàn bộ thiết lập sẽ được hoàn trả về đúng như ban đầu. Windows Update và các thành phần cốt lõi của hệ thống không bị ảnh hưởng.
-
-### Nếu máy tính bị sập nguồn hoặc tắt đột ngột khi đang bật Gaming Mode thì sao?
-Ở lần khởi động tiếp theo, Orime sẽ tự động đọc lại tệp nhật ký chưa hoàn tất và khôi phục các thiết lập hệ thống về nguyên trạng.
-
-### Ứng dụng có cần kết nối mạng để hoạt động không?
-**Không.** Các tính năng tối ưu chính đều hoạt động ngoại tuyến (offline). Tác vụ kiểm tra ping DNS ở Phase 3 sẽ tự bỏ qua nếu không có mạng.
-
-### Phase 0 tạm dừng tiến trình phụ có làm mất tab trình duyệt web không?
-**Không.** Phase 0 chỉ tạm dừng các tiến trình helper chạy ngầm (như trình kiểm tra cập nhật). Cửa sổ trình duyệt, các tab đang mở và các ứng dụng bạn đang dùng vẫn được giữ nguyên.
 
 ---
 
@@ -124,4 +108,17 @@ Nếu bạn không muốn cài đặt:
 
 * Windows 10 hoặc Windows 11 (64-bit).
 * Quyền Quản trị viên (Administrator) để ứng dụng có thể chỉnh timer 0.5 ms và chuyển trạng thái dịch vụ hệ thống.
-* Bản nén Portable đã đi kèm sẵn các tệp thư viện .NET 10 cần thiết.
+* Trường hợp ứng dụng báo lỗi không thể khởi động, hãy cài đặt gói [.NET Desktop Runtime](https://dotnet.microsoft.com/download/dotnet) và [Visual C++ Redistributable](https://learn.microsoft.com/cpp/windows/latest-supported-vc-redist) mới nhất.
+
+---
+
+## Câu hỏi thường gặp (FAQ)
+
+### Dùng Orime có bị khóa tài khoản game (Ban acc) không?
+**Hoàn toàn không.** Orime chỉ tinh chỉnh ở tầng hệ điều hành Windows (gói nguồn, dịch vụ hệ thống, bộ nhớ đệm RAM, độ phân giải timer và thiết lập mạng). Phần mềm không can thiệp vào tệp tin của game, không hook tiến trình và không đọc ghi bộ nhớ game. Ứng dụng an toàn tuyệt đối với mọi hệ thống chống gian lận như Riot Vanguard, Easy Anti-Cheat, BattlEye, VAC hay Ricochet.
+
+### Orime có làm hỏng Windows Update hay lỗi win không?
+**Không.** Trước khi đổi bất kỳ thiết lập nào, Orime đều sao lưu trạng thái gốc vào tệp nhật ký (Journal). Khi bạn tắt Gaming Mode hoặc thoát ứng dụng, toàn bộ thiết lập sẽ được hoàn trả về đúng như ban đầu. Windows Update và các thành phần cốt lõi của hệ thống không bị ảnh hưởng.
+
+### Nếu máy tính bị sập nguồn hoặc tắt đột ngột khi đang bật Gaming Mode thì sao?
+Ở lần khởi động tiếp theo, Orime sẽ tự động đọc lại tệp nhật ký chưa hoàn tất và khôi phục các thiết lập hệ thống về nguyên trạng.

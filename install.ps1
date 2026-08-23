@@ -45,25 +45,67 @@ $downloadSuccess = $false
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 -bor [Net.SecurityProtocolType]::Tls13
 
 foreach ($url in $mirrors) {
+    $fileStream = $null
+    $responseStream = $null
+    $response = $null
     try {
         Write-Host "  -> Connecting to source: $url" -ForegroundColor DarkGray
-        $webClient = New-Object System.Net.WebClient
-        $webClient.Headers.Add("User-Agent", "Orime-Installer")
-        $webClient.DownloadFile($url, $tempZip)
+        
+        $request = [System.Net.HttpWebRequest]::Create($url)
+        $request.UserAgent = "Orime-Setup"
+        $request.Timeout = 20000
+        $request.Method = "GET"
+        
+        $response = $request.GetResponse()
+        $totalBytes = $response.ContentLength
+        $totalMb = [Math]::Round($totalBytes / 1MB, 2)
+        
+        $responseStream = $response.GetResponseStream()
+        $fileStream = [System.IO.File]::Create($tempZip)
+        $buffer = New-Object byte[] 65536
+        $downloadedBytes = 0
+        $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
+        $lastUpdate = [System.DateTime]::MinValue
+        
+        while (($read = $responseStream.Read($buffer, 0, $buffer.Length)) -gt 0) {
+            $fileStream.Write($buffer, 0, $read)
+            $downloadedBytes += $read
+            
+            $now = [System.DateTime]::Now
+            if (($now - $lastUpdate).TotalMilliseconds -ge 120 -or $downloadedBytes -ge $totalBytes) {
+                $lastUpdate = $now
+                $elapsedSec = [Math]::Max(0.01, $stopwatch.Elapsed.TotalSeconds)
+                $speedMbSec = [Math]::Round(($downloadedBytes / 1MB) / $elapsedSec, 2)
+                $currMb = [Math]::Round($downloadedBytes / 1MB, 2)
+                
+                if ($totalBytes -gt 0) {
+                    $percent = [Math]::Min(100, [int](($downloadedBytes / $totalBytes) * 100))
+                    $barWidth = 24
+                    $completed = [int](($percent / 100) * $barWidth)
+                    $remaining = $barWidth - $completed
+                    $bar = ("=" * [Math]::Max(0, $completed - 1)) + (if ($completed -gt 0) { ">" } else { "" }) + (" " * $remaining)
+                    Write-Host -NoNewline "`r  [$bar] $percent% ($currMb MB / $totalMb MB) @ $speedMbSec MB/s    "
+                } else {
+                    Write-Host -NoNewline "`r  [Downloading...] $currMb MB @ $speedMbSec MB/s    "
+                }
+            }
+        }
+        
+        $fileStream.Flush()
+        $fileStream.Close()
+        $responseStream.Close()
+        $response.Close()
+        Write-Host ""
+        
         if ((Test-Path $tempZip) -and ((Get-Item $tempZip).Length -gt 1000000)) {
             $downloadSuccess = $true
-            Write-Host "  [OK] Downloaded successfully!" -ForegroundColor Green
+            Write-Host "  [OK] Download completed successfully! ($([Math]::Round((Get-Item $tempZip).Length / 1MB, 2)) MB in $([Math]::Round($stopwatch.Elapsed.TotalSeconds, 1))s)" -ForegroundColor Green
             break
         }
     } catch {
-        try {
-            Invoke-WebRequest -Uri $url -OutFile $tempZip -UseBasicParsing -TimeoutSec 30
-            if ((Test-Path $tempZip) -and ((Get-Item $tempZip).Length -gt 1000000)) {
-                $downloadSuccess = $true
-                Write-Host "  [OK] Downloaded successfully!" -ForegroundColor Green
-                break
-            }
-        } catch { }
+        if ($fileStream) { $fileStream.Close() }
+        if ($responseStream) { $responseStream.Close() }
+        if ($response) { $response.Close() }
     }
 }
 
